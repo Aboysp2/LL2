@@ -458,20 +458,49 @@ main#view{
 
 <script>
 /* ======================= DATA ======================= */
-const CHAPTERS = [
-  {id:1, title:"النطق والقراءة", desc:"الأصوات والحروف", lessons:[1,2,3,4,5,6,7,8]},
-  {id:2, title:"الأساسيات", desc:"التحية، الضمائر، être و avoir", lessons:[9,10,11,12,13,14,15]},
-  {id:3, title:"بناء الجملة", desc:"الترتيب، النفي، السؤال", lessons:[16,17,18,19,20,21]},
-  {id:4, title:"الأفعال والأزمنة", desc:"الحاضر، الماضي، المستقبل القريب", lessons:[22,23,24,25,26,27]},
-  {id:5, title:"الحياة اليومية", desc:"الوقت، المطعم، التسوق، المواصلات", lessons:[28,29,30,31,32,33,34]},
+const LEVELS_META = {
+  A1:{title:"A1", desc:"المبتدئ", subs:{
+    1:{title:"المستوى الأول", desc:"النطق الأساسي"},
+    2:{title:"المستوى الثاني", desc:"نطق متقدّم"},
+    3:{title:"المستوى الثالث", desc:"التعارف و être / avoir"},
+    4:{title:"المستوى الرابع", desc:"الجنس والأدوات والصفة"},
+  }},
+  A2:{title:"A2", desc:"الأساسي المتوسط", subs:{
+    1:{title:"المستوى الأول", desc:"بناء الجملة والنفي والسؤال"},
+    2:{title:"المستوى الثاني", desc:"حروف الجر والروابط والأفعال"},
+    3:{title:"المستوى الثالث", desc:"الحاضر والماضي والمستقبل القريب"},
+    4:{title:"المستوى الرابع", desc:"الحياة اليومية والمواقف"},
+  }},
+  B1:{title:"B1", desc:"المتوسط", subs:{
+    1:{title:"المستوى الأول", desc:"الماضي الناقص والمقارنة"},
+    2:{title:"المستوى الثاني", desc:"النصيحة والشرط"},
+    3:{title:"المستوى الثالث", desc:"الرأي والضمائر الموصولة والمشاعر"},
+    4:{title:"المستوى الرابع", desc:"مواقف وكتابة عملية"},
+  }},
+  B2:{title:"B2", desc:"فوق المتوسط", subs:{
+    1:{title:"المستوى الأول", desc:"الشرط الجازم والمبني للمجهول"},
+    2:{title:"المستوى الثاني", desc:"الكلام المنقول والاحتمال"},
+    3:{title:"المستوى الثالث", desc:"الحجاج وفهم النصوص"},
+    4:{title:"المستوى الرابع", desc:"النقاش والأسلوب الرسمي"},
+  }},
+};
+const LEVEL_RANGES = [
+  [1,4,'A1',1],[5,8,'A1',2],[9,12,'A1',3],[13,15,'A1',4],
+  [16,19,'A2',1],[20,23,'A2',2],[24,27,'A2',3],[28,34,'A2',4],
+  [35,37,'B1',1],[38,40,'B1',2],[41,43,'B1',3],[44,46,'B1',4],
+  [47,49,'B2',1],[50,52,'B2',2],[53,55,'B2',3],[56,58,'B2',4],
 ];
+function levelOf(n){
+  for(const [a,b,lvl,sub] of LEVEL_RANGES){ if(n>=a && n<=b) return {level:lvl, sub}; }
+  return {level:'A1', sub:1};
+}
 
 const LESSONS = [
 {n:1, chapter:1, title:"الأبجدية الفرنسية", goal:"معرفة الحروف الـ26 ونطق اسمك بها",
  rule:"26 حرفا. احفظ أسماء الحروف على مجموعات صغيرة، ثم استخدمها لتهجّي اسمك.",
  examples:[
-   {fr:"A / a", ar:"آ"},{fr:"B / b", ar:"بيه"},{fr:"C / c", ar:"سيه"},{fr:"D / d", ar:"ديه"},
-   {fr:"E / e", ar:"ه"},{fr:"F / f", ar:"أف"},{fr:"G / g", ar:"جيه"},{fr:"H / h", ar:"آش"},
+   {fr:"A / a", speak:"A", ar:"آ"},{fr:"B / b", speak:"B", ar:"بيه"},{fr:"C / c", speak:"C", ar:"سيه"},{fr:"D / d", speak:"D", ar:"ديه"},
+   {fr:"E / e", speak:"E", ar:"ه"},{fr:"F / f", speak:"F", ar:"أف"},{fr:"G / g", speak:"G", ar:"جيه"},{fr:"H / h", speak:"H", ar:"آش"},
  ],
  exercise:"تهجَّ اسمك بالفرنسية، حرفا حرفا."},
 {n:2, chapter:1, title:"حروف العلة", goal:"تمييز A E I O U Y داخل الكلمات",
@@ -702,6 +731,230 @@ const LESSONS = [
    {fr:"Tout droit.", ar:"مباشرة."},{fr:"C'est près d'ici.", ar:"قريب من هنا."},
  ],
  exercise:"اشرح طريقا قصيرا بالفرنسية."},
+
+{n:35, title:"الماضي الناقص (l'imparfait)", goal:"وصف عادات وحالات في الماضي",
+ rule:"يُستخدم الماضي الناقص للعادات والوصف في الماضي، ويُبنى من جذر nous بالحاضر + ais, ais, ait, ions, iez, aient.",
+ examples:[
+   {fr:"Quand j'étais petit, j'habitais à Lyon.", ar:"عندما كنت صغيرا، كنت أسكن في ليون."},
+   {fr:"Il faisait beau tous les jours.", ar:"كان الجو جميلا كل يوم."},
+   {fr:"Nous jouions dans le jardin.", ar:"كنا نلعب في الحديقة."},
+   {fr:"Elle avait toujours faim.", ar:"كانت دائما جائعة."},
+ ],
+ exercise:"اكتب 3 جمل عن طفولتك بصيغة الماضي الناقص."},
+{n:36, title:"الماضي المركّب أم الناقص؟", goal:"التمييز بين حدث منتهٍ وحالة مستمرة",
+ rule:"الماضي المركب لحدث محدد ومنتهٍ، والماضي الناقص لحالة أو خلفية مستمرة. غالبا يظهران معا في نفس القصة.",
+ examples:[
+   {fr:"Je dormais quand le téléphone a sonné.", ar:"كنت نائما عندما رنّ الهاتف."},
+   {fr:"Il pleuvait, alors nous sommes restés à la maison.", ar:"كانت تمطر، فبقينا في البيت."},
+   {fr:"Elle lisait un livre quand je suis arrivé.", ar:"كانت تقرأ كتابا عندما وصلت."},
+   {fr:"Nous étions fatigués après le voyage.", ar:"كنا متعبين بعد السفر."},
+ ],
+ exercise:"اكتب قصة قصيرة من جملتين تجمع بين الزمنين."},
+{n:37, title:"المقارنة والتفضيل", goal:"استخدام plus / moins / aussi ... que و le plus / le moins",
+ rule:"المقارنة: plus...que (أكثر من)، moins...que (أقل من)، aussi...que (بقدر). التفضيل: le/la plus...، le/la moins....",
+ examples:[
+   {fr:"Paris est plus grand que Lyon.", ar:"باريس أكبر من ليون."},
+   {fr:"Elle est aussi rapide que lui.", ar:"هي سريعة بقدره."},
+   {fr:"C'est le plus beau jour de l'année.", ar:"إنه أجمل يوم في السنة."},
+   {fr:"C'est le moins cher du magasin.", ar:"إنه الأرخص في المتجر."},
+ ],
+ exercise:"قارن بين مدينتين تعرفهما بجملتين."},
+
+{n:38, title:"النصيحة: il faut و devoir", goal:"تقديم نصيحة أو التزام",
+ rule:"il faut + مصدر = يجب (عام). devoir + مصدر = يجب على شخص محدد. tu devrais = ينصح بلطف.",
+ examples:[
+   {fr:"Il faut dormir tôt.", ar:"يجب النوم مبكرا."},
+   {fr:"Tu dois travailler plus.", ar:"يجب أن تعمل أكثر."},
+   {fr:"Tu devrais voir un médecin.", ar:"من الأفضل أن ترى طبيبا."},
+   {fr:"Nous devons partir maintenant.", ar:"يجب أن نغادر الآن."},
+ ],
+ exercise:"أعطِ نصيحتين لصديق يشعر بالتعب."},
+{n:39, title:"الشرط الحاضر (conditionnel)", goal:"التعبير عن رغبة أو افتراض مهذّب",
+ rule:"يُبنى من مصدر الفعل + نهايات الناقص: ais, ais, ait, ions, iez, aient. يُستخدم للتلطف أو الافتراض.",
+ examples:[
+   {fr:"Je voudrais un café, s'il vous plaît.", ar:"أود قهوة من فضلك."},
+   {fr:"J'aimerais voyager en France.", ar:"أحب أن أسافر إلى فرنسا."},
+   {fr:"Pourrais-tu m'aider ?", ar:"هل يمكنك مساعدتي؟ (بأدب)"},
+   {fr:"À ta place, je resterais.", ar:"لو كنت مكانك، لبقيت."},
+ ],
+ exercise:"اكتب طلبا مهذبا باستخدام الشرط الحاضر."},
+{n:40, title:"الجملة الشرطية مع si", goal:"التعبير عن شرط ونتيجته",
+ rule:"si + حاضر → حاضر أو مستقبل قريب (شرط واقعي). si + ناقص → شرط حاضر (شرط افتراضي).",
+ examples:[
+   {fr:"Si tu es fatigué, repose-toi.", ar:"إذا كنت متعبا، فارتَح."},
+   {fr:"S'il fait beau, nous sortirons.", ar:"إذا كان الجو جميلا، سنخرج."},
+   {fr:"Si j'avais le temps, je voyagerais.", ar:"لو كان لدي وقت، لسافرت."},
+   {fr:"Si j'étais riche, j'achèterais une maison.", ar:"لو كنت غنيا، لاشتريت بيتا."},
+ ],
+ exercise:"اكتب جملة شرطية واقعية وأخرى افتراضية."},
+
+{n:41, title:"التعبير عن الرأي", goal:"صياغة رأي بوضوح",
+ rule:"عبارات مفيدة: je pense que, à mon avis, je trouve que, selon moi.",
+ examples:[
+   {fr:"Je pense que c'est une bonne idée.", ar:"أعتقد أنها فكرة جيدة."},
+   {fr:"À mon avis, il a raison.", ar:"في رأيي، هو محق."},
+   {fr:"Je trouve ce film intéressant.", ar:"أجد هذا الفيلم مثيرا للاهتمام."},
+   {fr:"Selon moi, ce n'est pas juste.", ar:"في رأيي، هذا ليس عادلا."},
+ ],
+ exercise:"اكتب رأيك في موضوع يهمك بجملتين."},
+{n:42, title:"الضمائر الموصولة qui / que / où", goal:"ربط جملتين بضمير موصول",
+ rule:"qui يعوّض فاعلا، que يعوّض مفعولا، où يعوّض مكانا أو زمانا.",
+ examples:[
+   {fr:"J'ai un ami qui habite à Nice.", ar:"لدي صديق يسكن في نيس."},
+   {fr:"Le livre que je lis est passionnant.", ar:"الكتاب الذي أقرأه ممتع."},
+   {fr:"C'est la ville où je suis né.", ar:"إنها المدينة التي وُلدت فيها."},
+   {fr:"Voici la maison où j'ai grandi.", ar:"هذا هو البيت الذي كبرت فيه."},
+ ],
+ exercise:"اربط جملتين من عندك باستخدام qui أو que."},
+{n:43, title:"المشاعر والأحاسيس", goal:"التعبير عن الشعور بدقة",
+ rule:"استخدم être + صفة الشعور، أو avoir + اسم في بعض التعابير الثابتة.",
+ examples:[
+   {fr:"Je suis content(e) de te voir.", ar:"أنا سعيد لرؤيتك."},
+   {fr:"Elle est triste aujourd'hui.", ar:"هي حزينة اليوم."},
+   {fr:"J'ai peur des araignées.", ar:"أخاف من العناكب."},
+   {fr:"Nous sommes fiers de toi.", ar:"نحن فخورون بك."},
+ ],
+ exercise:"صف شعورك اليوم في جملتين."},
+
+{n:44, title:"عند الطبيب", goal:"وصف الحالة الصحية وطلب المساعدة",
+ rule:"عبارات أساسية: j'ai mal à..., je ne me sens pas bien, j'ai de la fièvre.",
+ examples:[
+   {fr:"J'ai mal à la tête.", ar:"أشعر بصداع."},
+   {fr:"Je ne me sens pas bien.", ar:"لا أشعر أني بخير."},
+   {fr:"J'ai de la fièvre depuis hier.", ar:"لدي حمى منذ الأمس."},
+   {fr:"Le médecin m'a donné un médicament.", ar:"أعطاني الطبيب دواء."},
+ ],
+ exercise:"صف عرضا صحيا بسيطا وما تحتاجه."},
+{n:45, title:"كتابة بريد إلكتروني بسيط", goal:"صياغة رسالة قصيرة ومهذبة",
+ rule:"البنية: تحية (Bonjour / Madame, Monsieur) — الغرض — خاتمة (Cordialement).",
+ examples:[
+   {fr:"Bonjour, je vous écris au sujet de...", ar:"مرحبا، أكتب إليكم بخصوص..."},
+   {fr:"Merci de votre réponse rapide.", ar:"شكرا لردكم السريع."},
+   {fr:"Pourriez-vous m'envoyer plus d'informations ?", ar:"هل يمكنكم إرسال مزيد من المعلومات؟"},
+   {fr:"Cordialement,", ar:"مع أطيب التحيات،"},
+ ],
+ exercise:"اكتب بريدا إلكترونيا قصيرا من 4 أسطر."},
+{n:46, title:"الطقس والفصول", goal:"وصف الجو والفصول بثقة",
+ rule:"استخدم Il fait + صفة للجو، و Il y a + اسم للظواهر.",
+ examples:[
+   {fr:"Il fait chaud en été.", ar:"الجو حار في الصيف."},
+   {fr:"Il pleut beaucoup en automne.", ar:"تمطر كثيرا في الخريف."},
+   {fr:"Il y a du vent aujourd'hui.", ar:"هناك رياح اليوم."},
+   {fr:"Il neige en hiver dans les montagnes.", ar:"تتساقط الثلوج شتاء في الجبال."},
+ ],
+ exercise:"صف طقس اليوم في مدينتك بجملتين."},
+
+{n:47, title:"صيغة الشرط الجازم (subjonctif) — المدخل", goal:"التعرف إلى صيغة الشرط الجازم وسياقاتها",
+ rule:"يُستخدم بعد عبارات مثل il faut que, je veux que, je souhaite que. يُبنى غالبا من جذر ils بالحاضر + e, es, e, ions, iez, ent.",
+ examples:[
+   {fr:"Il faut que tu partes maintenant.", ar:"يجب أن تغادر الآن."},
+   {fr:"Je veux que tu sois heureux.", ar:"أريدك أن تكون سعيدا."},
+   {fr:"Il faut que nous finissions ce travail.", ar:"يجب أن ننهي هذا العمل."},
+   {fr:"Je souhaite qu'elle réussisse.", ar:"أتمنى أن تنجح."},
+ ],
+ exercise:"اكتب جملتين باستخدام il faut que."},
+{n:48, title:"الشك والرغبة بالشرط الجازم", goal:"التعبير عن شك أو رغبة قوية",
+ rule:"بعد أفعال الشك (douter que) والرغبة (vouloir que, souhaiter que) يأتي الفعل بصيغة الشرط الجازم.",
+ examples:[
+   {fr:"Je doute qu'il vienne à l'heure.", ar:"أشك أن يأتي في الوقت المحدد."},
+   {fr:"Elle veut que nous restions.", ar:"تريد منا أن نبقى."},
+   {fr:"Je ne pense pas qu'il ait raison.", ar:"لا أعتقد أنه محق."},
+   {fr:"Il est possible qu'il pleuve demain.", ar:"من الممكن أن تمطر غدا."},
+ ],
+ exercise:"اكتب جملة شك وجملة رغبة بصيغة الشرط الجازم."},
+{n:49, title:"المبني للمجهول", goal:"صياغة جملة بالمبني للمجهول",
+ rule:"être + اسم المفعول. الفاعل الأصلي يصبح اختياريا بعد par.",
+ examples:[
+   {fr:"Le livre est écrit par un auteur célèbre.", ar:"الكتاب مكتوب من طرف مؤلف مشهور."},
+   {fr:"La maison a été vendue.", ar:"بيع البيت."},
+   {fr:"Ce plat est préparé avec amour.", ar:"يُحضَّر هذا الطبق بحب."},
+   {fr:"Les billets seront envoyés demain.", ar:"ستُرسَل التذاكر غدا."},
+ ],
+ exercise:"حوّل جملة فاعلة إلى مبنية للمجهول."},
+
+{n:50, title:"روابط متقدمة", goal:"استخدام bien que / alors que / cependant",
+ rule:"bien que + شرط جازم يعبّر عن التنازل. alors que وcependant للتقابل.",
+ examples:[
+   {fr:"Bien qu'il pleuve, nous sortons.", ar:"رغم أنها تمطر، نخرج."},
+   {fr:"Alors que je travaillais, il dormait.", ar:"بينما كنت أعمل، كان هو نائما."},
+   {fr:"Cependant, ce n'est pas facile.", ar:"مع ذلك، ليس الأمر سهلا."},
+   {fr:"Malgré la pluie, ils ont joué.", ar:"رغم المطر، لعبوا."},
+ ],
+ exercise:"اكتب جملة تنازل باستخدام bien que."},
+{n:51, title:"الكلام المنقول", goal:"نقل كلام شخص آخر بشكل غير مباشر",
+ rule:"il dit que + جملة (يبقى الزمن غالبا كما هو أو يتغيّر حسب زمن الفعل الأساسي).",
+ examples:[
+   {fr:"Il dit qu'il est fatigué.", ar:"يقول إنه متعب."},
+   {fr:"Elle a dit qu'elle viendrait.", ar:"قالت إنها ستأتي."},
+   {fr:"Ils ont expliqué pourquoi ils étaient en retard.", ar:"شرحوا لماذا كانوا متأخرين."},
+   {fr:"Il m'a demandé si j'étais prêt.", ar:"سألني إن كنت مستعدا."},
+ ],
+ exercise:"انقل جملة قالها لك أحدهم بأسلوب غير مباشر."},
+{n:52, title:"التعبير عن الاحتمال", goal:"صياغة تخمين أو احتمال",
+ rule:"عبارات مفيدة: peut-être, il se peut que + شرط جازم, probablement.",
+ examples:[
+   {fr:"Il est peut-être en retard.", ar:"ربما هو متأخر."},
+   {fr:"Il se peut qu'il pleuve.", ar:"من المحتمل أن تمطر."},
+   {fr:"Elle arrivera probablement demain.", ar:"ستصل غدا على الأرجح."},
+   {fr:"Il doit être fatigué après le voyage.", ar:"لا بد أنه متعب بعد السفر."},
+ ],
+ exercise:"اكتب تخمينين حول شيء تجهله بالضبط."},
+
+{n:53, title:"بناء حجة", goal:"تنظيم رأي بأدلة",
+ rule:"استخدم d'une part... d'autre part للتوازن، وde plus وen outre للإضافة، وen conclusion للختام.",
+ examples:[
+   {fr:"D'une part, c'est pratique. D'autre part, c'est cher.", ar:"من جهة، هذا عملي. من جهة أخرى، هذا مكلف."},
+   {fr:"De plus, cela prend du temps.", ar:"إضافة إلى ذلك، هذا يستغرق وقتا."},
+   {fr:"En conclusion, je préfère la première option.", ar:"في الختام، أفضّل الخيار الأول."},
+   {fr:"Par exemple, regardons les chiffres.", ar:"على سبيل المثال، لننظر إلى الأرقام."},
+ ],
+ exercise:"اكتب فقرة قصيرة برأي مدعوم بحجتين."},
+{n:54, title:"فهم مقال قصير", goal:"استخراج الفكرة الرئيسية من نص",
+ rule:"اقرأ العنوان أولا، ثم الجملة الأولى من كل فقرة؛ غالبا تحمل الفكرة الأساسية.",
+ examples:[
+   {fr:"Le titre annonce souvent le sujet principal.", ar:"العنوان غالبا يعلن الموضوع الرئيسي."},
+   {fr:"La première phrase résume l'idée du paragraphe.", ar:"الجملة الأولى تلخّص فكرة الفقرة."},
+   {fr:"Les chiffres soutiennent l'argument.", ar:"الأرقام تدعم الحجة."},
+   {fr:"La conclusion répond souvent à la question posée.", ar:"الخاتمة غالبا تجيب عن السؤال المطروح."},
+ ],
+ exercise:"اقرأ أحد نصوص «أخبار» في التطبيق ولخّصه بجملتين."},
+{n:55, title:"تعابير اصطلاحية شائعة", goal:"فهم واستخدام تعابير غير حرفية",
+ rule:"التعبير الاصطلاحي لا يُترجم حرفيا؛ احفظه كوحدة كاملة.",
+ examples:[
+   {fr:"Ça coûte les yeux de la tête.", ar:"ثمنه باهظ جدا (حرفيا: يكلّف عينَي الرأس)."},
+   {fr:"Il pleut des cordes.", ar:"إنها تمطر بغزارة."},
+   {fr:"Avoir le cafard.", ar:"الشعور بالحزن أو الملل."},
+   {fr:"Poser un lapin à quelqu'un.", ar:"عدم الحضور إلى موعد مع أحد."},
+ ],
+ exercise:"استخدم تعبيرا اصطلاحيا واحدا في جملة من عندك."},
+
+{n:56, title:"النقاش حول قضايا مجتمعية", goal:"التعبير عن موقف حول موضوع عام",
+ rule:"استخدم عبارات محايدة: certains pensent que... / d'autres estiment que... لتقديم آراء متعددة.",
+ examples:[
+   {fr:"Certains pensent que la technologie isole les gens.", ar:"يعتقد البعض أن التكنولوجيا تعزل الناس."},
+   {fr:"D'autres estiment qu'elle nous rapproche.", ar:"يرى آخرون أنها تقرّبنا."},
+   {fr:"Il est important de protéger l'environnement.", ar:"من المهم حماية البيئة."},
+   {fr:"Chacun a le droit d'exprimer son opinion.", ar:"لكل شخص الحق في التعبير عن رأيه."},
+ ],
+ exercise:"اكتب رأيين متعارضين حول موضوع مجتمعي تختاره."},
+{n:57, title:"الأسلوب الرسمي والرسائل", goal:"التمييز بين الأسلوب الرسمي وغير الرسمي",
+ rule:"الأسلوب الرسمي يستخدم vous وعبارات مثل je vous prie de... بدل الأسلوب اليومي.",
+ examples:[
+   {fr:"Je vous prie de bien vouloir m'excuser.", ar:"أرجو منكم قبول اعتذاري."},
+   {fr:"Veuillez trouver ci-joint mon CV.", ar:"يرجى الاطلاع على سيرتي الذاتية المرفقة."},
+   {fr:"Dans l'attente de votre réponse.", ar:"بانتظار ردكم."},
+   {fr:"Je vous remercie de votre attention.", ar:"أشكركم على اهتمامكم."},
+ ],
+ exercise:"اكتب جملتين بأسلوب رسمي لطلب وظيفة."},
+{n:58, title:"مراجعة شاملة وتقييم ذاتي B2", goal:"تثبيت ما تعلمته في المستوى B2",
+ rule:"راجع الشرط الجازم، المبني للمجهول، الكلام المنقول، والروابط المتقدمة قبل الانتقال إلى مستوى أعلى.",
+ examples:[
+   {fr:"Je suis fier(ère) des progrès que j'ai faits.", ar:"أنا فخور بالتقدم الذي أحرزته."},
+   {fr:"Il faut que je continue à pratiquer.", ar:"يجب أن أستمر في التمرن."},
+   {fr:"J'aimerais atteindre le niveau C1 un jour.", ar:"أود أن أصل إلى المستوى C1 يوما ما."},
+   {fr:"La pratique quotidienne fait toute la différence.", ar:"الممارسة اليومية تصنع كل الفرق."},
+ ],
+ exercise:"سجّل نفسك تتحدث 3 دقائق بالفرنسية عن تجربتك في تعلّم اللغة."},
 ];
 
 const DIALOGUES = [
@@ -734,6 +987,36 @@ const DIALOGUES = [
    {fr:"Pour qui ?", ar:"لِمَن؟", who:"b"},
    {fr:"Pour ma mère. Combien ça coûte ?", ar:"لأمي. كم السعر؟", who:"a"},
    {fr:"Vingt euros.", ar:"عشرون يورو.", who:"b"},
+ ]},
+ {n:6, title:"في الفندق", lines:[
+   {fr:"Bonjour, j'ai une réservation.", ar:"مرحبا، لدي حجز.", who:"a"},
+   {fr:"Quel est votre nom ?", ar:"ما اسمك؟", who:"b"},
+   {fr:"Voici votre chambre, au deuxième étage.", ar:"هذه غرفتك، في الطابق الثاني.", who:"b"},
+   {fr:"Merci beaucoup.", ar:"شكرا جزيلا.", who:"a"},
+ ]},
+ {n:7, title:"في الصيدلية", lines:[
+   {fr:"Bonjour, j'ai mal à la gorge.", ar:"مرحبا، أشعر بألم في الحلق.", who:"a"},
+   {fr:"Depuis quand ?", ar:"منذ متى؟", who:"b"},
+   {fr:"Depuis deux jours.", ar:"منذ يومين.", who:"a"},
+   {fr:"Prenez ce médicament trois fois par jour.", ar:"تناول هذا الدواء ثلاث مرات يوميا.", who:"b"},
+ ]},
+ {n:8, title:"موعد عمل", lines:[
+   {fr:"Bonjour, j'ai rendez-vous avec Madame Dubois.", ar:"مرحبا، لدي موعد مع السيدة دوبوا.", who:"a"},
+   {fr:"Un instant, je vais la prévenir.", ar:"لحظة، سأخبرها.", who:"b"},
+   {fr:"Merci, je peux attendre ici ?", ar:"شكرا، هل يمكنني الانتظار هنا؟", who:"a"},
+   {fr:"Bien sûr, asseyez-vous.", ar:"بالطبع، تفضل بالجلوس.", who:"b"},
+ ]},
+ {n:9, title:"مكالمة هاتفية", lines:[
+   {fr:"Allô, bonjour, c'est Karim.", ar:"ألو، مرحبا، معك كريم.", who:"a"},
+   {fr:"Bonjour Karim, comment puis-je vous aider ?", ar:"مرحبا كريم، كيف يمكنني مساعدتك؟", who:"b"},
+   {fr:"Je voudrais changer mon rendez-vous.", ar:"أود تغيير موعدي.", who:"a"},
+   {fr:"Pas de problème, quel jour vous convient ?", ar:"لا مشكلة، أي يوم يناسبك؟", who:"b"},
+ ]},
+ {n:10, title:"في المطار", lines:[
+   {fr:"Excusez-moi, où est la porte 12 ?", ar:"عذرا، أين البوابة 12؟", who:"a"},
+   {fr:"Tout droit, puis à gauche.", ar:"مباشرة، ثم إلى اليسار.", who:"b"},
+   {fr:"Le vol est à quelle heure ?", ar:"في أي ساعة الرحلة؟", who:"a"},
+   {fr:"À quinze heures trente.", ar:"في الساعة الثالثة والنصف مساء.", who:"b"},
  ]},
 ];
 
@@ -798,10 +1081,57 @@ const STORIES = [
  fr:"L'année prochaine, je vais apprendre mieux le français. Je vais lire des livres, regarder des films et parler tous les jours. Je veux voyager en France et parler avec des gens.",
  ar:"العام القادم سأتعلم الفرنسية بشكل أفضل. سأقرأ كتبا وأشاهد أفلاما وأتحدث كل يوم. أريد السفر إلى فرنسا والتحدث مع الناس.",
  q:"ما خطة الراوي للعام القادم؟"},
+{n:16, title:"Le marché du vendredi",
+ fr:"Chaque vendredi, Aïcha va au grand marché avec sa mère. Elles achètent des épices, des fruits frais et du tissu coloré. Après les achats, elles boivent un thé à la menthe ensemble.",
+ ar:"كل جمعة، تذهب عائشة إلى السوق الكبير مع أمها. تشتريان بهارات وفواكه طازجة وقماشا ملونا. بعد التسوق، تشربان معا شاي النعناع.",
+ q:"مع من تذهب عائشة إلى السوق؟ وماذا يشربان بعد ذلك؟"},
+{n:17, title:"Un examen important",
+ fr:"Demain, Youssef a un examen de mathématiques. Ce soir, il révise ses cours avec un ami. Il est un peu stressé, mais il se sent bien préparé.",
+ ar:"غدا، يوسف لديه امتحان في الرياضيات. هذا المساء، يراجع دروسه مع صديق. هو متوتر قليلا، لكنه يشعر بأنه مستعد جيدا.",
+ q:"ما مادة امتحان يوسف؟ ومع من يراجع؟"},
+{n:18, title:"La fête de fin d'année",
+ fr:"L'école organise une fête de fin d'année. Les élèves chantent, dansent et présentent leurs projets. Les parents sont fiers et applaudissent chaleureusement.",
+ ar:"تنظّم المدرسة حفلا لنهاية العام. يغني التلاميذ ويرقصون ويقدّمون مشاريعهم. الأهالي فخورون ويصفّقون بحرارة.",
+ q:"ماذا يفعل التلاميذ في الحفل؟"},
+{n:19, title:"Un voyage en bus",
+ fr:"Fatima prend le bus tous les matins pour aller au travail. Le trajet dure trente minutes. Elle en profite pour écouter un podcast en français.",
+ ar:"تركب فاطمة الحافلة كل صباح للذهاب إلى العمل. تستغرق الرحلة ثلاثين دقيقة. تستغل الوقت للاستماع إلى بودكاست بالفرنسية.",
+ q:"كم تستغرق رحلة فاطمة؟ وماذا تفعل خلالها؟"},
+{n:20, title:"Le jardin de mon grand-père",
+ fr:"Mon grand-père cultive des légumes dans son jardin depuis vingt ans. Chaque dimanche, toute la famille vient l'aider et repart avec des tomates fraîches.",
+ ar:"يزرع جدي الخضروات في حديقته منذ عشرين عاما. كل يوم أحد، تأتي العائلة كلها لمساعدته وتعود بطماطم طازجة.",
+ q:"منذ متى يزرع الجد حديقته؟ وماذا تأخذ العائلة معها؟"},
+];
+
+const NEWS = [
+{n:1, title:"Nouvelle ligne de tramway",
+ fr:"La ville va ouvrir une nouvelle ligne de tramway le mois prochain. Ce projet va faciliter les déplacements pour des milliers d'habitants chaque jour.",
+ ar:"ستفتتح المدينة خط ترام جديدا الشهر المقبل. سيسهّل هذا المشروع التنقل لآلاف السكان يوميا.",
+ q:"متى سيُفتتح خط الترام الجديد؟"},
+{n:2, title:"Un festival de musique",
+ fr:"Un grand festival de musique aura lieu ce weekend dans le centre-ville. Des artistes locaux et internationaux vont se produire sur trois scènes différentes.",
+ ar:"سيقام مهرجان موسيقي كبير هذا الأسبوع في وسط المدينة. سيقدّم فنانون محليون ودوليون عروضهم على ثلاث منصات مختلفة.",
+ q:"أين سيقام المهرجان؟ وكم منصة ستكون هناك؟"},
+{n:3, title:"Une application pour apprendre les langues",
+ fr:"De plus en plus de personnes utilisent des applications mobiles pour apprendre une nouvelle langue. Les experts disent que la pratique quotidienne, même courte, donne de bons résultats.",
+ ar:"يستخدم عدد متزايد من الناس تطبيقات الهاتف لتعلّم لغة جديدة. يقول الخبراء إن الممارسة اليومية، حتى لو كانت قصيرة، تعطي نتائج جيدة.",
+ q:"ماذا ينصح الخبراء لتعلّم لغة جديدة؟"},
+{n:4, title:"Le climat de la semaine",
+ fr:"Cette semaine, le temps sera ensoleillé du lundi au mercredi. Des pluies légères sont attendues jeudi et vendredi, avant un retour du soleil le weekend.",
+ ar:"هذا الأسبوع، سيكون الطقس مشمسا من الاثنين إلى الأربعاء. من المتوقع أمطار خفيفة يومي الخميس والجمعة، قبل عودة الشمس في نهاية الأسبوع.",
+ q:"في أي أيام يُتوقع هطول الأمطار؟"},
+{n:5, title:"Une équipe locale en finale",
+ fr:"L'équipe de football de la ville a gagné son match hier soir et jouera la finale dimanche prochain. Les supporters sont très enthousiastes.",
+ ar:"فاز فريق كرة القدم بالمدينة بمباراته مساء أمس وسيلعب النهائي يوم الأحد المقبل. المشجعون متحمسون جدا.",
+ q:"متى ستُلعب المباراة النهائية؟"},
+{n:6, title:"Un nouveau marché bio",
+ fr:"Un marché de produits biologiques ouvre ses portes chaque samedi matin sur la place principale. On y trouve des fruits, des légumes et du pain fait maison.",
+ ar:"يفتح سوق للمنتجات العضوية أبوابه كل صباح سبت في الساحة الرئيسية. يمكن أن تجد فيه فواكه وخضروات وخبزا منزلي الصنع.",
+ q:"متى يفتح السوق البيولوجي؟ وماذا يمكن أن نجد فيه؟"},
 ];
 
 const QUIZ = [
- {q:"ترجم إلى الفرنسية: «أنا أعيش في باريس».", a:"J'habite à Paris."},
+ {q:"ترجم إلى الفرنسية: «أنا أعيش في باريس».", a:"Je vis à Paris. (تُقبل أيضا: J'habite à Paris.)"},
  {q:"اختر الأداة الصحيحة: ___ livre  /  ___ maison", a:"un livre / une maison"},
  {q:"انفِ الجملة: «J'aime le café.»", a:"Je n'aime pas le café."},
  {q:"اصنع سؤالا باستخدام Est-ce que حول العمل هنا.", a:"Est-ce que tu travailles ici ?"},
@@ -849,12 +1179,13 @@ function loadState(){
     const raw = localStorage.getItem(STORE_KEY);
     if(raw) return JSON.parse(raw);
   }catch(e){}
-  return {lessons:{}, stories:{}, dialogues:{}, quizDone:false, plan:{}, streak:{count:0,last:null}, xp:0};
+  return {lessons:{}, stories:{}, dialogues:{}, news:{}, quizDone:false, plan:{}, streak:{count:0,last:null}, xp:0};
 }
 function saveState(){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
 }
 let state = loadState();
+if(!state.news) state.news = {};
 
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function bumpStreak(){
@@ -921,8 +1252,9 @@ function totalProgress(){
   const lessonsDone = Object.keys(state.lessons).length;
   const storiesDone = Object.keys(state.stories).length;
   const dialoguesDone = Object.keys(state.dialogues).length;
-  const total = LESSONS.length + STORIES.length + DIALOGUES.length + 1;
-  const done = lessonsDone + storiesDone + dialoguesDone + (state.quizDone?1:0);
+  const newsDone = Object.keys(state.news).length;
+  const total = LESSONS.length + STORIES.length + DIALOGUES.length + NEWS.length + 1;
+  const done = lessonsDone + storiesDone + dialoguesDone + newsDone + (state.quizDone?1:0);
   return {done, total, pct: Math.round((done/total)*100)};
 }
 
@@ -932,9 +1264,13 @@ function navigate(route){
   currentRoute = route;
   document.querySelectorAll('.navbtn').forEach(b => b.classList.toggle('active', b.dataset.route===route));
   const view = document.getElementById('view');
+  if(route==='lessons'){
+    const nx = nextLesson();
+    if(nx) currentLessonLevel = levelOf(nx.n).level;
+  }
   if(route==='home') view.innerHTML = renderHome();
   else if(route==='lessons') view.innerHTML = renderLessons();
-  else if(route==='reading') view.innerHTML = renderReading('dialogues');
+  else if(route==='reading') view.innerHTML = renderReading(currentReadingTab);
   else if(route==='quiz') view.innerHTML = renderQuiz();
   else if(route==='dictionary') view.innerHTML = renderDictionary();
   window.scrollTo(0,0);
@@ -994,44 +1330,58 @@ function renderHome(){
   </div>
 
   <div class="section-title">نظرة سريعة</div>
-  <div class="card" style="display:flex; gap:10px;">
+  <div class="card" style="display:flex; gap:8px;">
     <div style="flex:1; text-align:center;">
-      <div style="font-size:20px; font-weight:800; color:var(--teal);">${Object.keys(state.lessons).length}/${LESSONS.length}</div>
-      <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">دروس</div>
+      <div style="font-size:18px; font-weight:800; color:var(--teal);">${Object.keys(state.lessons).length}/${LESSONS.length}</div>
+      <div style="font-size:11px; color:var(--muted); margin-top:2px;">دروس</div>
     </div>
     <div style="flex:1; text-align:center; border-right:1px solid var(--line); border-left:1px solid var(--line);">
-      <div style="font-size:20px; font-weight:800; color:var(--teal);">${Object.keys(state.stories).length+Object.keys(state.dialogues).length}/${STORIES.length+DIALOGUES.length}</div>
-      <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">قراءات</div>
+      <div style="font-size:18px; font-weight:800; color:var(--teal);">${Object.keys(state.stories).length+Object.keys(state.dialogues).length+Object.keys(state.news).length}/${STORIES.length+DIALOGUES.length+NEWS.length}</div>
+      <div style="font-size:11px; color:var(--muted); margin-top:2px;">قراءات</div>
     </div>
     <div style="flex:1; text-align:center;">
-      <div style="font-size:20px; font-weight:800; color:var(--teal);">${state.xp||0}</div>
-      <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">نقطة خبرة</div>
+      <div style="font-size:18px; font-weight:800; color:var(--teal);">${state.xp||0}</div>
+      <div style="font-size:11px; color:var(--muted); margin-top:2px;">نقطة خبرة</div>
     </div>
   </div>
   `;
 }
 
 /* ======================= LESSONS ======================= */
+let currentLessonLevel = 'A1';
 function renderLessons(){
+  const levelIds = Object.keys(LEVELS_META);
   return `
-  <div class="section-title">فصول الكتاب</div>
-  ${CHAPTERS.map(ch=>{
-    const chLessons = LESSONS.filter(l=>l.chapter===ch.id);
-    const doneCount = chLessons.filter(l=>state.lessons[l.n]).length;
+  <div class="subtabs">
+    ${levelIds.map(lv=>`<div class="subtab ${lv===currentLessonLevel?'active':''}" data-level="${lv}">${lv}</div>`).join('')}
+  </div>
+  <div id="levelBody">${renderLevelBody(currentLessonLevel)}</div>
+  `;
+}
+function renderLevelBody(levelId){
+  const meta = LEVELS_META[levelId];
+  const subIds = Object.keys(meta.subs).map(Number).sort((a,b)=>a-b);
+  return `
+  <div class="section-title">${levelId} — ${meta.desc}</div>
+  ${subIds.map(subId=>{
+    const subMeta = meta.subs[subId];
+    const subLessons = LESSONS.filter(l=>{ const lv = levelOf(l.n); return lv.level===levelId && lv.sub===subId; });
+    const doneCount = subLessons.filter(l=>state.lessons[l.n]).length;
+    const domId = levelId+'-'+subId;
     return `
-    <div class="chapter" id="chapter-${ch.id}">
-      <div class="chapter-head" data-toggle="${ch.id}">
+    <div class="chapter" id="chapter-${domId}">
+      <div class="chapter-head" data-toggle="${domId}">
         <div>
-          <h3>${ch.title}</h3>
-          <div class="sub">${ch.desc}</div>
+          <h3>${subMeta.title}</h3>
+          <div class="sub">${subMeta.desc}</div>
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
-          <div class="chapter-progress">${doneCount}/${chLessons.length}</div>
+          <div class="chapter-progress">${doneCount}/${subLessons.length}</div>
           <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
       </div>
       <div class="chapter-body">
-        ${chLessons.map(l=>`
+        ${subLessons.map(l=>`
           <div class="lesson-row ${state.lessons[l.n]?'done':''}" data-lesson="${l.n}">
             <div class="lesson-num">${state.lessons[l.n] ? '✓' : l.n}</div>
             <div style="flex:1;">
@@ -1062,7 +1412,7 @@ function lessonSheetHtml(l){
           <span class="fr">${ex.fr}</span>
           <span class="ar">${ex.ar}</span>
         </div>
-        <button class="speak-btn" data-speak="${escapeHtml(ex.fr)}">${SPEAK_ICON}</button>
+        <button class="speak-btn" data-speak="${escapeHtml(ex.speak || ex.fr)}">${SPEAK_ICON}</button>
       </div>
     `).join('')}
     <div class="exercise-box">
@@ -1078,13 +1428,16 @@ function lessonSheetHtml(l){
   `;
 }
 
-/* ======================= READING (dialogues / stories) ======================= */
+/* ======================= READING (dialogues / stories / news) ======================= */
+let currentReadingTab = 'dialogues';
 function renderReading(tab){
-  const activeTab = tab || 'dialogues';
+  const activeTab = tab || currentReadingTab;
+  currentReadingTab = activeTab;
   return `
   <div class="subtabs">
     <div class="subtab ${activeTab==='dialogues'?'active':''}" data-readtab="dialogues">الحوارات</div>
-    <div class="subtab ${activeTab==='stories'?'active':''}" data-readtab="stories">القصص القصيرة</div>
+    <div class="subtab ${activeTab==='stories'?'active':''}" data-readtab="stories">القصص</div>
+    <div class="subtab ${activeTab==='news'?'active':''}" data-readtab="news">أخبار</div>
   </div>
   <div id="readingList">${renderReadingList(activeTab)}</div>
   `;
@@ -1097,6 +1450,17 @@ function renderReadingList(tab){
         <div>
           <div class="read-title">حوار ${d.n} — ${d.title}</div>
           <div class="read-sub">${d.lines.length} أسطر حوار</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  if(tab==='news'){
+    return NEWS.map(s=>`
+      <div class="read-card ${state.news[s.n]?'done':''}" data-news="${s.n}">
+        <div class="read-badge">${state.news[s.n]?'✓':s.n}</div>
+        <div>
+          <div class="read-title">خبر ${s.n} — ${s.title}</div>
+          <div class="read-sub">نص قصير للتدريب على القراءة</div>
         </div>
       </div>
     `).join('');
@@ -1148,7 +1512,7 @@ function storySheetHtml(s){
   return `
     <div class="close-sheet" data-close>✕</div>
     <div class="sheet-handle"></div>
-    <div style="font-size:12px; font-weight:800; color:var(--muted);">قصة ${s.n} من 15</div>
+    <div style="font-size:12px; font-weight:800; color:var(--muted);">قصة ${s.n} من ${STORIES.length}</div>
     <h2>${s.title}</h2>
     <div class="story-fr">
       <p class="fr">${s.fr}</p>
@@ -1171,6 +1535,36 @@ function storySheetHtml(s){
     </div>
   `;
 }
+
+function newsSheetHtml(s){
+  const done = !!state.news[s.n];
+  return `
+    <div class="close-sheet" data-close>✕</div>
+    <div class="sheet-handle"></div>
+    <div style="font-size:12px; font-weight:800; color:var(--muted);">خبر ${s.n} من ${NEWS.length}</div>
+    <h2>${s.title}</h2>
+    <div class="story-fr">
+      <p class="fr">${s.fr}</p>
+      <div style="margin-top:12px;">
+        <button class="speak-btn big" data-speak="${escapeHtml(s.fr)}">${SPEAK_ICON}</button>
+      </div>
+    </div>
+    <button class="toggle-ar" data-toggle-ar>إظهار الترجمة العربية</button>
+    <div class="story-ar" id="storyArBox">
+      <p>${s.ar}</p>
+    </div>
+    <div class="q-box">
+      <div class="lbl">سؤال الفهم</div>
+      <p style="margin:0; font-size:14px; font-weight:700;">${s.q}</p>
+    </div>
+    <div class="mark-done-row">
+      <button class="cta ${done?'ghost':''}" id="markNewsBtn" data-n="${s.n}" style="flex:1;">
+        ${done ? 'تمت قراءته ✓' : 'أنهيت قراءة هذا الخبر'}
+      </button>
+    </div>
+  `;
+}
+
 
 /* ======================= QUIZ ======================= */
 function renderQuiz(){
@@ -1242,6 +1636,13 @@ function attachViewHandlers(route){
   }
 
   if(route==='lessons'){
+    document.querySelectorAll('[data-level]').forEach(t=>{
+      t.addEventListener('click', ()=>{
+        currentLessonLevel = t.dataset.level;
+        document.getElementById('view').innerHTML = renderLessons();
+        attachViewHandlers('lessons');
+      });
+    });
     document.querySelectorAll('[data-toggle]').forEach(head=>{
       head.addEventListener('click', ()=>{
         document.getElementById('chapter-'+head.dataset.toggle).classList.toggle('open');
@@ -1250,9 +1651,15 @@ function attachViewHandlers(route){
     document.querySelectorAll('[data-lesson]').forEach(row=>{
       row.addEventListener('click', ()=> openLessonSheet(parseInt(row.dataset.lesson)));
     });
-    // auto-open the chapter containing the next lesson
+    // auto-open the sub-level containing the next lesson, within the current level tab
     const nx = nextLesson();
-    if(nx){ const el = document.getElementById('chapter-'+nx.chapter); if(el) el.classList.add('open'); }
+    if(nx){
+      const lv = levelOf(nx.n);
+      if(lv.level === currentLessonLevel){
+        const el = document.getElementById('chapter-'+lv.level+'-'+lv.sub);
+        if(el) el.classList.add('open');
+      }
+    }
   }
 
   if(route==='reading'){
@@ -1267,6 +1674,9 @@ function attachViewHandlers(route){
     });
     document.querySelectorAll('[data-story]').forEach(row=>{
       row.addEventListener('click', ()=> openStorySheet(parseInt(row.dataset.story)));
+    });
+    document.querySelectorAll('[data-news]').forEach(row=>{
+      row.addEventListener('click', ()=> openNewsSheet(parseInt(row.dataset.news)));
     });
   }
 
@@ -1323,6 +1733,7 @@ function openDialogueSheet(n){
     else { state.dialogues[n]=true; bumpStreak(); addXp(8); showToast("رائع! أنهيت هذا الحوار"); }
     saveState();
     closeSheet();
+    currentReadingTab='dialogues';
     navigate('reading');
   });
 }
@@ -1341,6 +1752,26 @@ function openStorySheet(n){
     else { state.stories[n]=true; bumpStreak(); addXp(12); showToast("ممتاز! أنهيت هذه القصة"); }
     saveState();
     closeSheet();
+    currentReadingTab='stories';
+    navigate('reading');
+  });
+}
+function openNewsSheet(n){
+  const s = NEWS.find(x=>x.n===n);
+  if(!s) return;
+  openSheet(newsSheetHtml(s));
+  document.querySelectorAll('[data-speak]').forEach(b=> b.addEventListener('click', ()=> speak(b.dataset.speak)));
+  document.querySelector('[data-close]').addEventListener('click', closeSheet);
+  document.querySelector('[data-toggle-ar]').addEventListener('click', (e)=>{
+    document.getElementById('storyArBox').classList.toggle('show');
+    e.target.textContent = document.getElementById('storyArBox').classList.contains('show') ? 'إخفاء الترجمة العربية' : 'إظهار الترجمة العربية';
+  });
+  document.getElementById('markNewsBtn').addEventListener('click', ()=>{
+    if(state.news[n]) delete state.news[n];
+    else { state.news[n]=true; bumpStreak(); addXp(10); showToast("رائع! أنهيت قراءة هذا الخبر"); }
+    saveState();
+    closeSheet();
+    currentReadingTab='news';
     navigate('reading');
   });
 }
